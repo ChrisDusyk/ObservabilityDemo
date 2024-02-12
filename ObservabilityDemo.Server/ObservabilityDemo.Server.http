@@ -4,3 +4,8 @@ GET {{ObservabilityDemo.Server_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###
+
+GET {{ObservabilityDemo.Server_HostAddress}}/api/test
+Accept: application/json
+
+###
