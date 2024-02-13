@@ -2,6 +2,8 @@ using Npgsql;
 using Microsoft.EntityFrameworkCore;
 using Npgsql.EntityFrameworkCore.PostgreSQL;
 using ObservabilityDemo.Server.Database;
+using Microsoft.EntityFrameworkCore.Design;
+using ObservabilityDemo.Server.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +28,12 @@ if (app.Environment.IsDevelopment())
 	app.UseSwaggerUI();
 }
 
+if (app.Environment.IsDevelopment())
+{
+	app.UseSwagger();
+	app.UseSwaggerUI();
+};
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
@@ -33,5 +41,8 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.MapFallbackToFile("/index.html");
+
+app.MapCourseEndpoints();
+app.MapStudentEndpoints();
 
 app.Run();

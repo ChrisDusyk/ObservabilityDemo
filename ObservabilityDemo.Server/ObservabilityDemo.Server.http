@@ -9,3 +9,8 @@ GET {{ObservabilityDemo.Server_HostAddress}}/api/test
 Accept: application/json
 
 ###
+
+GET {{ObservabilityDemo.Server_HostAddress}}/api/Student
+Accept: application/json
+
+###

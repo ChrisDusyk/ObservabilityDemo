@@ -2,17 +2,17 @@
 
 namespace ObservabilityDemo.Server.Database
 {
-	public class DemoContext : DbContext
+	public class DemoContext(DbContextOptions options) : DbContext(options)
 	{
-		public DemoContext(DbContextOptions options) : base(options)
-		{
-		}
-
-		public DbSet<TestTable> TestTables { get; set; }
+		public DbSet<Student> Students { get; set; }
+		public DbSet<EnrollmentEntity> Enrollments { get; set; }
+		public DbSet<CourseEntity> Courses { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
-			modelBuilder.Entity<TestTable>().ToTable("test_table");
+			modelBuilder.Entity<CourseEntity>().ToTable("course");
+			modelBuilder.Entity<EnrollmentEntity>().ToTable("enrollment");
+			modelBuilder.Entity<Student>().ToTable("student");
 		}
 	}
 }
