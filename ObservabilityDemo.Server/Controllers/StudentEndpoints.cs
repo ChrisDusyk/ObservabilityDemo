@@ -24,6 +24,7 @@ namespace ObservabilityDemo.Server.Controllers
 			{
 				return await db.Students.AsNoTracking()
 					.Include(s => s.Enrollments)
+					.ThenInclude(s => s.Course)
 					.FirstOrDefaultAsync(model => model.Id == id)
 					is Student model
 						? TypedResults.Ok(model.ToEnrolledStudent())
@@ -77,8 +78,7 @@ namespace ObservabilityDemo.Server.Controllers
 				student.LastName,
 				student.FirstName,
 				student.EnrollmentDate ?? DateTime.Now,
-				student.Enrollments == null ? Enumerable.Empty<Enrollment>() : student.Enrollments.Select(e =>
-					new Enrollment(e.EnrollmentId, e.CourseId, e.StudentId, e.Grade)));
+				student.Enrollments == null ? Enumerable.Empty<Enrollment>() : student.Enrollments.Select(e => e.ToEnrollmentModel()));
 
 		private static Student ToStudentEntity(this NewStudent newStudent) =>
 			new()
@@ -89,6 +89,9 @@ namespace ObservabilityDemo.Server.Controllers
 			};
 
 		private static Enrollment ToEnrollmentModel(this EnrollmentEntity enrollment) =>
-			new(enrollment.EnrollmentId, enrollment.CourseId, enrollment.StudentId, enrollment.Grade);
+			new(enrollment.EnrollmentId, enrollment.Grade, enrollment.Course.ToCourse());
+
+		private static Course ToCourse(this CourseEntity courseEntity) =>
+			new(courseEntity.CourseId, courseEntity.Title, courseEntity.Credits);
 	}
 }

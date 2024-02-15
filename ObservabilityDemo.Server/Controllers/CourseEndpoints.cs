@@ -37,8 +37,7 @@ public static class CourseEndpoints
 				.ExecuteUpdateAsync(setters => setters
 					.SetProperty(m => m.CourseId, course.Id)
 					.SetProperty(m => m.Title, course.Title)
-					.SetProperty(m => m.Credits, course.Credits)
-					);
+					.SetProperty(m => m.Credits, course.Credits));
 			return affected == 1 ? TypedResults.Ok() : TypedResults.NotFound();
 		})
 		.WithName("UpdateCourse")

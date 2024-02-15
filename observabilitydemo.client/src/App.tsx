@@ -1,39 +1,34 @@
 import { useEffect, useState } from 'react';
 import './App.css';
-
-interface TestTable {
-    id: number;
-    title: string;
-    createdDate: Date;
-}
+import { Student } from './models/Student';
 
 function App() {
-    const [data, setData] = useState<TestTable[]>([]);
+    const [student, setStudent] = useState<Student>();
 
     useEffect(() => {
         populateData();
     }, []);
 
-    const contents = data === undefined
+    const contents = student === undefined
         ? <p><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationreact">https://aka.ms/jspsintegrationreact</a> for more details.</em></p>
-        : <table className="table table-striped" aria-labelledby="tabelLabel">
-            <thead>
-                <tr>
-                    <th><strong>ID</strong></th>
-                    <th>Title</th>
-                    <th>Created Date</th>
-                </tr>
-            </thead>
-            <tbody>
-                {data.map(datum =>
-                    <tr key={datum.id}>
-                        <td>{datum.id}</td>
-                        <td>{datum.title}</td>
-                        <td>{datum.createdDate.toString()}</td>
-                    </tr>
-                )}
-            </tbody>
-        </table>;
+        : <div>
+            <div>
+                <label id="id">ID</label>
+                <span aria-labelledby="id">{student.id}</span>
+            </div>
+            <div>
+                <label id="name">Name</label>
+                <span aria-labelledby="name">{`${student.lastName}, ${student.firstName}`}</span>
+            </div>
+            <div>
+                <label id="classes">Classes</label>
+                <span aria-aria-labelledby="classes">
+                    <ul>
+                        {student.enrollments.map(stu => <li key={stu.id}>{`${stu.course.id}: ${stu.course.title}`}</li>)}
+                    </ul>
+                </span>
+            </div>
+        </div>
 
     return (
         <div>
@@ -44,9 +39,9 @@ function App() {
     );
 
     async function populateData() {
-        const response = await fetch('api/test');
+        const response = await fetch('api/student/1');
         const data = await response.json();
-        setData(data);
+        setStudent(data);
     }
 }
 
