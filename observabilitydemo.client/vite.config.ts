@@ -55,6 +55,9 @@ export default defineConfig({
         https: {
             key: fs.readFileSync(keyFilePath),
             cert: fs.readFileSync(certFilePath),
-        }
-    }
+        },
+        watch: {
+            usePolling: true,
+        },
+    },
 })
