@@ -10,7 +10,7 @@ namespace ObservabilityDemo.Server.Controllers
 	{
 		public static void MapStudentEndpoints(this IEndpointRouteBuilder routes)
 		{
-			var group = routes.MapGroup("/api/Student").WithTags(nameof(EnrolledStudent));
+			var group = routes.MapGroup("/api/Students").WithTags(nameof(EnrolledStudent));
 
 			group.MapGet("/", async (DemoContext db) =>
 			{
