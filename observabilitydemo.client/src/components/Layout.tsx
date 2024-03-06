@@ -1,4 +1,4 @@
-import { IconButton } from "@chakra-ui/react";
+import { Container, IconButton } from "@chakra-ui/react";
 import { FaHome, FaAddressBook, FaChalkboard } from "react-icons/fa";
 import { FiMenu } from "react-icons/fi";
 import { Outlet } from "react-router-dom";
@@ -6,6 +6,7 @@ import { SidenavItem } from "./sidenav/SideNavItems";
 import Sidenav from "./sidenav/Sidenav";
 import SidenavContainer from "./sidenav/SidenavContainer";
 import { useSidenav } from "./sidenav/SidenavContext";
+import Header from "./Header";
 
 export default function Layout() {
   const navItems: SidenavItem[] = [
@@ -23,7 +24,10 @@ export default function Layout() {
         onClick={onOpen}
         icon={<FiMenu />}
       />
-      <Outlet />
+      <Header />
+      <Container as="main" mt="20">
+        <Outlet />
+      </Container>
     </SidenavContainer>
   );
 }

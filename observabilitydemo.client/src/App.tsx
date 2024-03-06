@@ -4,6 +4,7 @@ import ErrorPage from "./components/ErrorPage";
 import Home from "./pages/Home";
 import { SidenavProvider } from "./components/sidenav/SidenavContext";
 import Layout from "./components/Layout";
+import EditStudent, { loader as studentLoader } from "./pages/student/EditStudent";
 
 const router = createBrowserRouter([
   {
@@ -18,6 +19,11 @@ const router = createBrowserRouter([
       {
         path: "students",
         element: <StudentList />,
+      },
+      {
+        path: "students/:id",
+        element: <EditStudent />,
+        loader: studentLoader,
       },
     ],
   },

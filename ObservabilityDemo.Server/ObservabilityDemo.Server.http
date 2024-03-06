@@ -10,7 +10,7 @@ Accept: application/json
 
 ###
 
-GET {{ObservabilityDemo.Server_HostAddress}}/api/Student
+GET {{ObservabilityDemo.Server_HostAddress}}/api/Students/2
 Accept: application/json
 
 ###
