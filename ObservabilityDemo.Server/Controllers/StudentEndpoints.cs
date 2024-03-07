@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using ObservabilityDemo.Server.Database;
 using ObservabilityDemo.Server.Models;
+using System.Diagnostics;
 using System.Drawing.Text;
 
 namespace ObservabilityDemo.Server.Controllers
@@ -15,6 +16,7 @@ namespace ObservabilityDemo.Server.Controllers
 			group.MapGet("/", async (DemoContext db) =>
 			{
 				var students = await db.Students.ToListAsync();
+				Activity.Current.SetTag("StudentCount", students.Count);
 				return students.Select(s => s.ToEnrolledStudent());
 			})
 			.WithName("GetAllStudents")

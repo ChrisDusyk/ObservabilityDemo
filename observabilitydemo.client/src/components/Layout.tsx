@@ -25,7 +25,7 @@ export default function Layout() {
         icon={<FiMenu />}
       />
       <Header />
-      <Container as="main" mt="20">
+      <Container as="main" mt="20" maxWidth="100%">
         <Outlet />
       </Container>
     </SidenavContainer>
