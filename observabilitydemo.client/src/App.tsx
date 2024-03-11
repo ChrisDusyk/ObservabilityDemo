@@ -4,7 +4,8 @@ import ErrorPage from "./components/ErrorPage";
 import Home from "./pages/Home";
 import { SidenavProvider } from "./components/sidenav/SidenavContext";
 import Layout from "./components/Layout";
-import EditStudent, { loader as studentLoader } from "./pages/student/EditStudent";
+import EditStudent from "./pages/student/EditStudent";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const router = createBrowserRouter([
   {
@@ -23,17 +24,20 @@ const router = createBrowserRouter([
       {
         path: "students/:id",
         element: <EditStudent />,
-        loader: studentLoader,
       },
     ],
   },
 ]);
 
+const queryClient = new QueryClient();
+
 function App() {
   return (
-    <SidenavProvider>
-      <RouterProvider router={router} />
-    </SidenavProvider>
+    <QueryClientProvider client={queryClient}>
+      <SidenavProvider>
+        <RouterProvider router={router} />
+      </SidenavProvider>
+    </QueryClientProvider>
   );
 }
 

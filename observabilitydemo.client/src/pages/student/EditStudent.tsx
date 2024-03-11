@@ -13,7 +13,7 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import { LoaderFunctionArgs, NavLink, useLoaderData } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import {
   Field,
   FieldInputProps,
@@ -26,13 +26,7 @@ import { SingleDatepicker } from "chakra-dayzed-datepicker";
 import { FaAngleLeft } from "react-icons/fa";
 import { getStudent, updateStudent } from "../../services/StudentService";
 import { Student } from "../../models/Student";
-
-export async function loader({ params }: LoaderFunctionArgs) {
-  const id = Number.parseInt(params.id || "");
-  const student = await getStudent(id);
-  console.log(student);
-  return student;
-}
+import { useQuery } from "@tanstack/react-query";
 
 interface FormValues {
   id: number;
@@ -42,13 +36,27 @@ interface FormValues {
 }
 
 export default function EditStudent() {
-  const student = useLoaderData() as Student;
+  const { id } = useParams();
+  const { isPending, data } = useQuery({
+    queryKey: ["getStudentById"],
+    queryFn: () => getStudent(id || ""),
+  });
+
+  const student = data || {
+    id: 0,
+    firstName: "",
+    lastName: "",
+    enrollments: [],
+  };
+
   const initialValues: FormValues = {
     id: student.id,
     firstName: student.firstName,
     lastName: student.lastName,
     enrollmentDate: student.enrollmentDate?.toString(),
   };
+
+  if (isPending) return <>Loading...</>;
 
   return (
     <>
