@@ -1,12 +1,8 @@
-using Npgsql;
 using Azure.Monitor.OpenTelemetry.AspNetCore;
 using Microsoft.EntityFrameworkCore;
-using Npgsql.EntityFrameworkCore.PostgreSQL;
 using ObservabilityDemo.Server.Database;
-using Microsoft.EntityFrameworkCore.Design;
 using ObservabilityDemo.Server.Controllers;
 using OpenTelemetry.Trace;
-using System.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,8 +16,18 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DemoContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("Default")));
 
 // Add OpenTelemetry config
-builder.Services.ConfigureOpenTelemetryTracerProvider((sp, builder) => builder.AddSource("O11yDemo"));
-builder.Services.AddOpenTelemetry().UseAzureMonitor();
+var honeycombConfig = builder.Configuration.GetHoneycombOptions();
+builder.Services
+	.AddOpenTelemetry()
+	.UseAzureMonitor()
+	.WithTracing(otelBuilder =>
+	{
+		otelBuilder
+			.AddHoneycomb(honeycombConfig)
+			.AddCommonInstrumentations();
+	});
+
+builder.Services.AddSingleton(TracerProvider.Default.GetTracer(honeycombConfig.ServiceName));
 
 var app = builder.Build();
 
